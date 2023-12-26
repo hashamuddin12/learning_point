@@ -40,18 +40,6 @@ const userSignUp = async (req, res) => {
       });
     }
 
-    if (!req.files["profilePicture"]) {
-      return res.status(400).send({
-        success: false,
-        message: "Please Upload Your Profile Picture",
-      });
-    }
-    const profilePictureResponse = await cloudinary.uploader.upload(
-      `data:image/png;base64,${req.files["profilePicture"][0].buffer.toString(
-        "base64"
-      )}`
-    );
-
     let user;
     if (req.body.role === "Teacher") {
       if (!req.files["cvImage"]) {
@@ -129,7 +117,6 @@ const userSignUp = async (req, res) => {
         fullName: req.body.fullName,
         password: req.body.password,
         role: req.body.role,
-        profilePicture: `${profilePictureResponse.url}`,
         cvImage: `${cvImageResponse.url}`,
         education: req.body.education,
         subject: req.body.subject,
@@ -143,7 +130,6 @@ const userSignUp = async (req, res) => {
         fullName: req.body.fullName,
         password: req.body.password,
         role: req.body.role,
-        profilePicture: `${profilePictureResponse.url}`,
       });
     }
 
@@ -233,4 +219,24 @@ const userLogin = async (req, res) => {
   }
 };
 
-module.exports = { userSignUp, userLogin };
+const getUserProfile = async (req, res) => {
+  try {
+    const fetchUser = await users.findOne({ _id: req.user._id }).select({
+      password: 0,
+    });
+
+    return res.status(200).send({
+      success: true,
+      message: "User Data has been Fetched Successfully",
+      data: fetchUser,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(400).send({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+module.exports = { userSignUp, userLogin, getUserProfile };

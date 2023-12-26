@@ -17,7 +17,6 @@ const userSignUpValidate = Joi.object({
     "any.required": "Please Enter Your Role",
     "string.empty": "Please Enter Your Role",
   }),
-  profilePicture: Joi.string().allow(null).allow(""),
   education: Joi.string().allow(null).allow(""),
   subject: Joi.string().allow(null).allow(""),
   cvImage: Joi.string().allow(null).allow(""),
