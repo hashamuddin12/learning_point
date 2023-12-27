@@ -42,14 +42,14 @@ const userSignUp = async (req, res) => {
 
     let user;
     if (req.body.role === "Teacher") {
-      if (!req.files["cvImage"]) {
-        return res.status(400).send({
-          success: false,
-          message: "Please Upload Your CV",
-        });
-      }
+      // if (!req.files["cvImage"]) {
+      //   return res.status(400).send({
+      //     success: false,
+      //     message: "Please Upload Your CV",
+      //   });
+      // }
 
-      console.log(req.files["cvImage"]);
+      // console.log(req.files["cvImage"]);
 
       if (!req.body.bankAccount) {
         return res.status(400).send({
@@ -108,18 +108,18 @@ const userSignUp = async (req, res) => {
           ip: req.connection.remoteAddress,
         },
       });
-      const cvImageResponse = await cloudinary.uploader.upload(
-        `data:image/png;base64,${req.files["cvImage"][0].buffer.toString(
-          "base64"
-        )}`
-      );
+      // const cvImageResponse = await cloudinary.uploader.upload(
+      //   `data:image/png;base64,${req.files["cvImage"][0].buffer.toString(
+      //     "base64"
+      //   )}`
+      // );
 
       user = new users({
         emailAddress: req.body.emailAddress,
         fullName: req.body.fullName,
         password: req.body.password,
         role: req.body.role,
-        cvImage: `${cvImageResponse.url}`,
+        // cvImage: `${cvImageResponse.url}`,
         education: req.body.education,
         subject: req.body.subject,
         accountId: account.id,
