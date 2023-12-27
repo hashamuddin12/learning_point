@@ -19,7 +19,7 @@ const userSignUpValidate = Joi.object({
   }),
   education: Joi.string().allow(null).allow(""),
   subject: Joi.string().allow(null).allow(""),
-  cvImage: Joi.string().allow(null).allow(""),
+  cvImage: Joi.array().allow(null).allow(""),
   bankAccount: Joi.string().allow(null).allow(""),
 });
 

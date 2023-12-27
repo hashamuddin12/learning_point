@@ -49,6 +49,8 @@ const userSignUp = async (req, res) => {
         });
       }
 
+      console.log(req.files["cvImage"]);
+
       if (!req.body.bankAccount) {
         return res.status(400).send({
           success: false,
