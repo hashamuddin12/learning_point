@@ -119,7 +119,7 @@ const userSignUp = async (req, res) => {
         fullName: req.body.fullName,
         password: req.body.password,
         role: req.body.role,
-        // cvImage: `${cvImageResponse.url}`,
+        cvImage: `${cvImageResponse.url}`,
         education: req.body.education,
         subject: req.body.subject,
         accountId: account.id,
