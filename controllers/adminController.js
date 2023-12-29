@@ -21,6 +21,27 @@ const getAllTeacher = async (req, res) => {
     }
 };
 
+const getAllStudent = async (req, res) => {
+    try {
+        const findAllStudent = await users.find({
+            role: "Student"
+        }).sort({ createdAt: -1 })
+
+        return res.status(200).send({
+            success: true,
+            message: "Fetch All Students Successfully",
+            totalUser: findAllStudent.length,
+            data: findAllStudent,
+        });
+    } catch (e) {
+        console.log(e);
+        return res.status(400).send({
+            success: false,
+            message: "Something went wrong",
+        });
+    }
+}
+
 const verifyTeacher = async (req, res) => {
     try {
         const getTeacher = await users.findOne({ _id: req.query.teacherId }).select({ isVerified: 1, role: 1 })
@@ -55,4 +76,4 @@ const verifyTeacher = async (req, res) => {
     }
 }
 
-module.exports = { getAllTeacher, verifyTeacher };
+module.exports = { getAllTeacher, verifyTeacher, getAllStudent };
