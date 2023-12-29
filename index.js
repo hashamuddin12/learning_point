@@ -4,6 +4,7 @@ const cors = require("cors");
 const port = process.env.PORT;
 require("./config/database");
 const authRouter = require("./routers/auth");
+const adminRouter = require("./routers/admin");
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -14,7 +15,7 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use(authRouter);
+app.use([authRouter, adminRouter]);
 
 app.listen(port, () => {
   console.log(
