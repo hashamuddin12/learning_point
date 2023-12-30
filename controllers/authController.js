@@ -96,7 +96,7 @@ const userSignUp = async (req, res) => {
           email: req.body.emailAddress,
         },
         external_account: {
-          account_number: req.body.bankAccount,
+          account_number: "000123456789",
           object: "bank_account",
           country: "US",
           currency: "usd",
