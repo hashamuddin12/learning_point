@@ -5,6 +5,7 @@ const port = process.env.PORT;
 require("./config/database");
 const authRouter = require("./routers/auth");
 const adminRouter = require("./routers/admin");
+const courseRouter = require("./routers/course");
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -15,7 +16,7 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use([authRouter, adminRouter]);
+app.use([authRouter, adminRouter, courseRouter]);
 
 app.listen(port, () => {
   console.log(

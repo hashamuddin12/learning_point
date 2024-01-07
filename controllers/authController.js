@@ -7,7 +7,6 @@ const {
   userLoginValidate,
 } = require("../validations/auth");
 const cloudinary = require("cloudinary").v2;
-const fs = require("fs");
 const PROCESS = process.env;
 const stripe = require("stripe")(PROCESS.STRIPE_SECRET_KEY);
 
