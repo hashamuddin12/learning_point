@@ -5,6 +5,7 @@ cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
+  timeout: 600000,
 });
 const { courseUploadValidate } = require("../validations/course");
 
@@ -49,65 +50,13 @@ const uploadCourse = async (req, res) => {
     );
 
     const material1Response = await cloudinary.uploader.upload(
-      `data:image/png;base64,${req.files["material_1"][0].buffer.toString(
+      `data:video/mp4;base64,${req.files["material_1"][0].buffer.toString(
         "base64"
-      )}`
+      )}`,
+      { resource_type: "video" }
     );
 
-    let material2Response;
-    if (req.files["material_2"]) {
-      material2Response = await cloudinary.uploader.upload(
-        `data:image/png;base64,${req.files["material_2"][0].buffer.toString(
-          "base64"
-        )}`
-      );
-    }
-
-    let material3Response;
-    if (req.files["material_3"]) {
-      material3Response = await cloudinary.uploader.upload(
-        `data:image/png;base64,${req.files["material_3"][0].buffer.toString(
-          "base64"
-        )}`
-      );
-    }
-
-    if (
-      req.files["material_1"] &&
-      req.files["material_2"] &&
-      req.files["material_3"]
-    ) {
-      const insertCourse = new courses({
-        userId: req.user._id,
-        courseTitle: req.body.courseTitle,
-        courseDescription: req.body.courseDescription,
-        material_1: `${material1Response.url}`,
-        material_2: `${material2Response.url}`,
-        material_3: `${material3Response.url}`,
-        price: req.body.price,
-        courseThumbnail: `${courseThumbnail.url}`,
-      });
-      await insertCourse.save();
-    } else if (
-      req.files["material_1"] &&
-      req.files["material_2"] &&
-      !req.files["material_3"]
-    ) {
-      const insertCourse = new courses({
-        userId: req.user._id,
-        courseTitle: req.body.courseTitle,
-        courseDescription: req.body.courseDescription,
-        material_1: `${material1Response.url}`,
-        material_2: `${material2Response.url}`,
-        price: req.body.price,
-        courseThumbnail: `${courseThumbnail.url}`,
-      });
-      await insertCourse.save();
-    } else if (
-      req.files["material_1"] &&
-      !req.files["material_2"] &&
-      !req.files["material_3"]
-    ) {
+    if (req.files["material_1"]) {
       const insertCourse = new courses({
         userId: req.user._id,
         courseTitle: req.body.courseTitle,
@@ -137,4 +86,22 @@ const uploadCourse = async (req, res) => {
   }
 };
 
-module.exports = { uploadCourse };
+const fetchAllCourses = async (req, res) => {
+  try {
+    const getAllCourses = await courses.find();
+
+    return res.status(200).send({
+      success: true,
+      message: "Fetch All Courses Successfully",
+      data: getAllCourses,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(400).send({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+module.exports = { uploadCourse, fetchAllCourses };

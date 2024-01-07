@@ -14,8 +14,6 @@ const courseUploadValidate = Joi.object({
     "string.empty": "Please Enter Course Price",
   }),
   material_1: Joi.array().allow(null).allow(""),
-  material_2: Joi.array().allow(null).allow(""),
-  material_3: Joi.array().allow(null).allow(""),
   courseThumbnail: Joi.array().allow(null).allow(""),
 });
 

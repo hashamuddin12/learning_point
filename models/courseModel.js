@@ -23,16 +23,6 @@ const courseSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    material_2: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    material_3: {
-      type: String,
-      required: false,
-      default: null,
-    },
     price: {
       type: Number,
       required: true,
