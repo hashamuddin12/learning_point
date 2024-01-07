@@ -175,6 +175,7 @@ const userLogin = async (req, res) => {
     const checkUser = await users
       .findOne({
         emailAddress: req.body.emailAddress,
+        role: req.body.role,
       })
       .select({ updatedAt: 0 });
 
