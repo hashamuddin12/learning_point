@@ -1,4 +1,5 @@
 const { courses } = require("../models/courseModel");
+const { applyCourse } = require("../models/applyCourse");
 const cloudinary = require("cloudinary").v2;
 const { users } = require("../models/userModel");
 cloudinary.config({
@@ -104,4 +105,30 @@ const fetchAllCourses = async (req, res) => {
   }
 };
 
-module.exports = { uploadCourse, fetchAllCourses };
+const fetchTeacherKPI = async (req, res) => {
+  try {
+    const getTeacherCourse = await courses
+      .find({ userId: req.user._id })
+      .select({ _id: 1 });
+    const getTeacherStudents = await applyCourse
+      .find({ teacherId: req.user._id })
+      .select({ _id: 1 });
+
+    return res.status(200).send({
+      success: true,
+      message: "Fetch Teacher KPI Successfully",
+      data: {
+        totalCourse: getTeacherCourse.length,
+        totalStudents: getTeacherStudents.length,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(400).send({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+module.exports = { uploadCourse, fetchAllCourses, fetchTeacherKPI };

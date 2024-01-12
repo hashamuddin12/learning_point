@@ -6,6 +6,7 @@ const upload = multer();
 const {
   uploadCourse,
   fetchAllCourses,
+  fetchTeacherKPI,
 } = require("../controllers/courseController");
 
 courseRouter.post(
@@ -21,5 +22,6 @@ courseRouter.post(
 );
 
 courseRouter.get("/api/fetchAllCourses", [verifyToken], fetchAllCourses);
+courseRouter.get("/api/fetchTeacherKPI", [verifyToken], fetchTeacherKPI);
 
 module.exports = courseRouter;
