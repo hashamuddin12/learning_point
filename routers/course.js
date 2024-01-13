@@ -7,6 +7,7 @@ const {
   uploadCourse,
   fetchAllCourses,
   fetchTeacherKPI,
+  fetchCourseByStudent,
 } = require("../controllers/courseController");
 
 courseRouter.post(
@@ -23,5 +24,10 @@ courseRouter.post(
 
 courseRouter.get("/api/fetchAllCourses", [verifyToken], fetchAllCourses);
 courseRouter.get("/api/fetchTeacherKPI", [verifyToken], fetchTeacherKPI);
+courseRouter.get(
+  "/api/fetchCourseByStudent",
+  [verifyToken],
+  fetchCourseByStudent
+);
 
 module.exports = courseRouter;
