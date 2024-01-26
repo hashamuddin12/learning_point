@@ -131,4 +131,29 @@ const fetchTeacherKPI = async (req, res) => {
   }
 };
 
-module.exports = { uploadCourse, fetchAllCourses, fetchTeacherKPI };
+const fetchCourseByStudent = async (req, res) => {
+  try {
+    const fetchCourses = await applyCourse
+      .find({ studentId: req.user._id })
+      .populate("courseId");
+
+    return res.status(200).send({
+      success: true,
+      message: "Fetch All Courses Successfully",
+      data: fetchCourses,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(400).send({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+module.exports = {
+  uploadCourse,
+  fetchAllCourses,
+  fetchTeacherKPI,
+  fetchCourseByStudent,
+};

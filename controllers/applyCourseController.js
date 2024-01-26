@@ -15,21 +15,28 @@ const buyCourse = async (req, res) => {
         message: "This Course Does Not Exist",
       });
     }
-    const paymentMethodId = await stripe.paymentMethods.create({
-      type: "card",
-      card: {
-        number: req.body.cardNumber,
-        exp_month: req.body.expMonth,
-        exp_year: req.body.expYear,
-        cvc: req.body.cvc,
-      },
-    });
+    if (
+      req.body.cardNumber &&
+      req.body.expMonth &&
+      req.body.expYear &&
+      req.body.cvc
+    ) {
+      const paymentMethodId = await stripe.paymentMethods.create({
+        type: "card",
+        card: {
+          number: req.body.cardNumber,
+          exp_month: req.body.expMonth,
+          exp_year: req.body.expYear,
+          cvc: req.body.cvc,
+        },
+      });
 
-    await stripe.paymentIntents.create({
-      amount: fetchCourse.price * 100,
-      currency: "usd",
-      payment_method: paymentMethodId.id,
-    });
+      await stripe.paymentIntents.create({
+        amount: fetchCourse.price * 100,
+        currency: "usd",
+        payment_method: paymentMethodId.id,
+      });
+    }
 
     const courseApply = new applyCourse({
       teacherId: fetchCourse.userId,
