@@ -9,6 +9,10 @@ const {
 const cloudinary = require("cloudinary").v2;
 const PROCESS = process.env;
 const stripe = require("stripe")(PROCESS.STRIPE_SECRET_KEY);
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(
+  "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"
+);
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -146,11 +150,23 @@ const userSignUp = async (req, res) => {
       }
     );
 
-    return res.status(200).send({
-      success: true,
-      message: "User Registered Successfully",
-      data: user,
-      token,
+    const msg = {
+      to: user.emailAddress,
+      from: {
+        name: "LEARNING POINT",
+        email: "hasham.uddin@jumppace.com",
+      },
+      subject: "CREATE AN ACCOUNT",
+      templateId: "d-bf0c6c5454d7484e93f9a1c062e4efab",
+      dynamicTemplateData: {},
+    };
+    sgMail.send(msg).then(() => {
+      return res.status(200).send({
+        success: true,
+        message: "User Registered Successfully",
+        data: user,
+        token,
+      });
     });
   } catch (e) {
     console.log(e);
